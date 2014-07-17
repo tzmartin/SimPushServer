@@ -1,5 +1,5 @@
 /**
- * Your Copyright Here
+ * @tzmartin
  *
  * Appcelerator Titanium is Copyright (c) 2009-2010 by Appcelerator, Inc.
  * and licensed under the Apache Public License (version 2)
@@ -41,15 +41,18 @@
 
 -(void)start:(id)args
 {
-    //ENSURE_UI_THREAD(start, args);
-    //ENSURE_SINGLE_ARG(args, NSDictionary);
-    ENSURE_UI_THREAD_0_ARGS;
+    ENSURE_UI_THREAD(start, args);
+
+    NSNumber *port = [args objectAtIndex:0];
+    
+    [UIApplication sharedApplication].remoteNotificationsPort = port;
+    
     [[UIApplication sharedApplication] listenForRemoteNotifications];
     
-    NSLog(@"-----------------");
-    NSLog(@"[INFO] SimPushServer is running on port: 9930");
+    NSLog(@"----------------------------------");
+    NSLog(@"[INFO] SimPushServer is running on port: %@",port);
     NSLog(@"Usage: echo -n '{\"message\":\"message3\"}' | nc -4u -w1 localhost 9930");
-    NSLog(@"-----------------");
+    NSLog(@"----------------------------------");
     
 }
 
@@ -100,25 +103,6 @@
 		// been removed, we can optionally clean up any resources
 		// since no body is listening at this point for that event
 	}
-}
-
-#pragma Public APIs
-
--(id)example:(id)args
-{
-	// example method
-	return @"hello world";
-}
-
--(id)exampleProp
-{
-	// example property getter
-	return @"hello world";
-}
-
--(void)setExampleProp:(id)value
-{
-	// example property setter
 }
 
 @end
