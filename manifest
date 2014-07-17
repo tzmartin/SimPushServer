@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0
+apiversion: 2
+description: Local APN server for testing push notifications on simulator
+author: tzmartin
+license: MIT
+copyright: TZ Martin
+
+
+# these should not be edited
+name: SimPushServer
+moduleid: com.sp.simpushserver
+guid: 949304a8-956b-47d5-94dd-7086f0534007
+platform: iphone
+minsdk: 3.2.3.GA
