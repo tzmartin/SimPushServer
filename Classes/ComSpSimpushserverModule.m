@@ -43,15 +43,15 @@
 {
     ENSURE_UI_THREAD(start, args);
 
-    NSNumber *port = [args objectAtIndex:0];
+    NSInteger port = [[args objectAtIndex:0] integerValue];
     
-    [UIApplication sharedApplication].remoteNotificationsPort = port;
+    [[UIApplication sharedApplication] setRemoteNotificationsPort:port];
     
     [[UIApplication sharedApplication] listenForRemoteNotifications];
     
     NSLog(@"----------------------------------");
-    NSLog(@"[INFO] SimPushServer is running on port: %@",port);
-    NSLog(@"Usage: echo -n '{\"message\":\"message3\"}' | nc -4u -w1 localhost 9930");
+    NSLog(@"[INFO] SimPushServer is running on port: %i",port);
+    NSLog(@"Usage: echo -n '{\"message\":\"message3\"}' | nc -4u -w1 localhost %i",port);
     NSLog(@"----------------------------------");
     
 }

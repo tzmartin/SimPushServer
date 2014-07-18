@@ -17,9 +17,21 @@ Download the compiled version from the ```dist``` folder or compile your own usi
 To access this module from JavaScript, you would do the following:
 
 ```
+// Register notification
+Ti.Network.registerForPushNotifications({
+	types: [
+		Ti.Network.NOTIFICATION_TYPE_BADGE,
+		Ti.Network.NOTIFICATION_TYPE_ALERT,
+		Ti.Network.NOTIFICATION_TYPE_SOUND
+	],
+	success  : function(e) { Ti.API.info('device token success'); },
+	error    : function(e) { alert('deviceTokenError: ' + JSON.stringify(e, null, 4)); },
+	callback : function(e) { alert(e); }
+});
+
+// Start server 
 var SimPushServer = require("com.sp.simpushserver");
 SimPushServer.start(9930);
-
 ```
 
 Then send a message from the command line to port ```9930```.

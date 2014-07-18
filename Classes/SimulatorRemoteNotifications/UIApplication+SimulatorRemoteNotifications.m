@@ -7,8 +7,6 @@
 //
 
 #import "UIApplication+SimulatorRemoteNotifications.h"
-#import "ComSpSimpushserverModule.h"
-#import "TiApp.h"
 
 #ifdef UIKIT_AVAILABLE
 
@@ -73,26 +71,29 @@ static int __port = SimulatorRemoteNotificationsDefaultPort;
 			NSLog(@"SimulatorRemoteNotification: message error (not a dictionary)");
 		} else {
             
-            NSLog(@"didReceiveRemoteNotification: %@", dict);
+            NSLog(@"%@", dict);
             
-            #ifdef __IPHONE_7_0
-                if ([TiProxy respondsToSelector:@selector(application:didReceiveRemoteNotification:fetchCompletionHandler:)]) {
-                    
-                    NSLog(@"fetchCompletionHandler");
-                    
-                    [TiProxy didReceiveRemoteNotification:dict fetchCompletionHandler:^(UIBackgroundFetchResult result) {}];
-                }
-            #endif
-            if ([TiApp respondsToSelector:@selector(application:didReceiveRemoteNotification:)]) {
+            if ([self.delegate respondsToSelector:@selector(application:didReceiveRemoteNotification:)]) {
                 
                 NSLog(@"didReceiveRemoteNotification");
                 
-                [TiApp application:self didReceiveRemoteNotification:dict];
+                [self.delegate application:self didReceiveRemoteNotification:dict];
+                
+                if ([self.delegate application:self _hasListeners:@"subscribe"]) {
+                    [self.delegate application:self fireEvent:@"subscribe" withObject:@{@"message" : dict}];
+                }
             }
             
-            if ([TiApp _hasListeners:@"subscribe"]) {
-                [TiApp fireEvent:@"subscribe" withObject:@{@"message" : dict}];
-            }
+            #ifdef __IPHONE_7_0
+                if ([self.delegate respondsToSelector:@selector(application:didReceiveRemoteNotification:fetchCompletionHandler:)]) {
+                    
+                    NSLog(@"fetchCompletionHandler");
+                    
+                    [self.delegate didReceiveRemoteNotification:dict fetchCompletionHandler:^(UIBackgroundFetchResult result) {}];
+                }
+            #endif
+
+            
 		}
 	});
     dispatch_source_set_cancel_handler(input_src,  ^{
